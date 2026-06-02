@@ -11,17 +11,24 @@ System design helps us define a solution that meets the business requirements. I
 
 Every app starts simple — one server does everything. As users grow, you split responsibilities:
 
-```
-       [Single Server]                    [Distributed System]
+``` mermaid
+flowchart LR
 
-  ┌──────────────────┐              ┌────────────────────────┐
-  │  Web Server      │              │     Load Balancer      │
-  │  App Logic       │   grows →    └──────┬──────┬──────┘
-  │  Database        │                     │      │
-  └──────────────────┘              [Server] [Server] [Server]
-   Simple ✅  Fragile ❌                      │
-                                        [Cache / DB]
-                                    Scalable ✅  Complex ⚠️
+A["Single Server<br/>Web Server<br/>App Logic<br/>Database"]
+
+A -->|"User Growth"| B["Load Balancer"]
+
+B --> S1["Server 1"]
+B --> S2["Server 2"]
+B --> S3["Server 3"]
+
+S1 --> DB["Database"]
+S2 --> DB
+S3 --> DB
+
+S1 --> C["Cache"]
+S2 --> C
+S3 --> C
 ```
 
 ### The 5 Core Pillars
@@ -34,16 +41,79 @@ Every app starts simple — one server does everything. As users grow, you split
 | **Latency** | How fast a single request is served |
 | **Maintainability** | Easy for engineers to change & deploy |
 
+``` mermaid
+mindmap
+  root((System Design))
+    Scalability
+      More Users
+      More Traffic
+      Horizontal Scaling
+
+    Reliability
+      Fault Tolerance
+      Recovery
+      Redundancy
+
+    Availability
+      24x7 Access
+      Minimal Downtime
+
+    Latency
+      Fast Response
+      Better User Experience
+
+    Maintainability
+      Easy Changes
+      Easy Deployment
+      Clean Architecture
+```
+### System Design - Decision flow
+
+```mermaid
+flowchart TD
+
+A[Business Requirements] --> B[Estimate Scale]
+
+B --> C[Choose Architecture]
+
+C --> D[Scalability]
+C --> E[Reliability]
+C --> F[Availability]
+C --> G[Latency]
+C --> H[Maintainability]
+
+D --> I[Final Design]
+E --> I
+F --> I
+G --> I
+H --> I
+```
+
 ### Key Trade-offs
 
 > Every design decision is a trade-off. There is no perfect system.
 
-| Want | Sacrifice |
-|------|-----------|
-| Higher availability | More cost (redundant machines) |
-| Lower latency | Sometimes consistency (stale cache) |
-| Stronger consistency | Higher latency (wait for all nodes) |
-| More services | Higher operational complexity |
+```mermaid
+graph TD
+
+A[System Design Trade-Offs]
+
+A --> B[Higher Availability]
+B --> C[More Servers]
+C --> D[Higher Cost]
+
+A --> E[Lower Latency]
+E --> F[Cache Data]
+F --> G[Possible Stale Data]
+
+A --> H[Strong Consistency]
+H --> I[Node Synchronization]
+I --> J[Higher Latency]
+
+A --> K[More Microservices]
+K --> L[Independent Scaling]
+L --> M[Operational Complexity]
+```
 
 **Example:** Instagram shows your feed with a slight delay — they chose *eventual consistency* over *strong consistency* because 1 second delay is invisible to users and saves huge infrastructure cost.
 
