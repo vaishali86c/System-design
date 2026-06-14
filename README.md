@@ -31,5 +31,3 @@ Hey, welcome to the course. I hope this course provides a great learning experie
 ## Contributing
 
 This repo is my personal learning journey through system design — documenting everything I learn, one topic at a time.
-
-If something is wrong, could be explained better, or you have something valuable to add — feel free to open a PR or raise an issue. Learn along or contribute. Either way, you are welcome here.
